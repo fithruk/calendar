@@ -13,12 +13,13 @@ const EventRemove = ({ id }) => {
 
   const removeEvent = async (id) => {
     const setRemovePermition = eventsArr.find((item) => id === item.id);
-
+    console.log(new Date(setRemovePermition.date));
     if (
-      new Date(setRemovePermition.date).getDate() === new Date().getDate() &&
-      new Date(setRemovePermition.dateFrom).getHours() ===
-        new Date().getHours() + 1 &&
-      new Date().getMinutes() >= 45
+      new Date(setRemovePermition.date) < new Date() ||
+      (new Date(setRemovePermition.date).getDate() === new Date().getDate() &&
+        new Date(setRemovePermition.dateFrom).getHours() ===
+          new Date().getHours() + 1 &&
+        new Date().getMinutes() >= 45)
     ) {
       alert("You cannot delete an event less than 15 minutes before it starts");
       return;
