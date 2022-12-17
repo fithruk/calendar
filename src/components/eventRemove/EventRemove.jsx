@@ -18,10 +18,7 @@ const EventRemove = ({ id }) => {
       new Date(setRemovePermition.date).getDate() === new Date().getDate() &&
       new Date(setRemovePermition.dateFrom).getHours() ===
         new Date().getHours() + 1 &&
-      Math.abs(
-        new Date(setRemovePermition.dateFrom).getMinutes() -
-          new Date().getMinutes()
-      ) > 15
+      new Date().getMinutes() >= 45
     ) {
       alert("You cannot delete an event less than 15 minutes before it starts");
       return;
