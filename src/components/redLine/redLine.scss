@@ -1,0 +1,29 @@
+.red-line {
+  position: absolute;
+  width: 100%;
+  border-top: 1.5px solid red;
+  z-index: 5;
+  animation: spread 3s;
+
+  &::before {
+    content: "";
+    position: absolute;
+    display: block;
+    top: -3.5px;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: red;
+  }
+}
+
+@keyframes spread {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}

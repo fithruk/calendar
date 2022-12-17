@@ -1,0 +1,36 @@
+.event {
+  position: relative;
+  width: 80%;
+  background-color: cornflowerblue;
+  z-index: 1;
+  border-radius: 8px;
+  padding: 8px;
+  color: #fff;
+  transition: 0.2s linear;
+
+  &__title {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 8px;
+  }
+
+  &:hover {
+    background-color: red;
+  }
+
+  .delete-event-btn {
+    position: absolute;
+    right: -50%;
+    top: 80%;
+    width: 80%;
+    border-radius: 8px;
+    padding: 8px;
+    color: #222222;
+    z-index: 2;
+    box-shadow: 0 0 15px black;
+    cursor: pointer;
+    border: none;
+  }
+}
