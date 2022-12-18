@@ -89,7 +89,7 @@ const Modal = () => {
       setModalFormData(initialDateSettings);
       return;
     }
-    console.log(modalFormData);
+
     upLoadNewTask(modalFormData);
     setModalIsOpen(false);
   };
