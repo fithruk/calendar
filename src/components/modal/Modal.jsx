@@ -82,9 +82,9 @@ const Modal = () => {
 
   const submitModal = (e) => {
     e.preventDefault();
-    const isValid = dataValidate(dateFrom, dateTo, date, eventsArr);
-    if (isValid.length > 0) {
-      isValid.forEach(({ msg }) => alert(msg));
+    const isntValid = dataValidate(dateFrom, dateTo, date, eventsArr);
+    if (isntValid) {
+      isntValid.forEach(({ msg }) => alert(msg));
       setModalIsOpen(false);
       setModalFormData(initialDateSettings);
       return;

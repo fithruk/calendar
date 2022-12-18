@@ -29,8 +29,11 @@ const dataValidate = (dateStart, dateEnd, dateOfEvent, arrEvenst) => {
       }
     });
   }
-  console.log(errors);
-  return errors;
+
+  if (errors.length > 0) {
+    return errors;
+  }
+  return null;
 };
 
 export { dataValidate };
