@@ -14,19 +14,22 @@ const dataValidate = (dateStart, dateEnd, dateOfEvent, arrEvenst) => {
   }
   if (arrEvenst.length > 0) {
     arrEvenst.forEach((event) => {
-      if (
-        (dateStart < new Date(event.dateFrom) &&
-          dateEnd > new Date(event.dateTo)) ||
-        (dateStart < new Date(event.dateFrom) &&
-          dateEnd > new Date(event.dateFrom)) ||
-        dateStart.getHours() === new Date(event.dateFrom).getHours()
-      ) {
-        errors.push({
-          msg: `This time slot :${event.title} is busy or the previous event has not ended yet`,
-        });
+      if (dateOfEvent.getDate() === new Date(event.date).getDate()) {
+        if (
+          (dateStart < new Date(event.dateFrom) &&
+            dateEnd > new Date(event.dateTo)) ||
+          (dateStart < new Date(event.dateFrom) &&
+            dateEnd > new Date(event.dateFrom)) ||
+          dateStart.getHours() === new Date(event.dateFrom).getHours()
+        ) {
+          errors.push({
+            msg: `This time slot :${event.title} is busy or the previous event has not ended yet`,
+          });
+        }
       }
     });
   }
+  console.log(errors);
   return errors;
 };
 
