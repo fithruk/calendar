@@ -32,7 +32,7 @@ const Modal = () => {
           )}`
         ),
         date: new Date(
-          `${moment(date).format("Y-M-D")} ${setFormatPropertyMinutes(
+          `${moment(date).format("YYYY-MM-DD")} ${setFormatPropertyMinutes(
             name,
             value
           )}`
@@ -117,7 +117,7 @@ const Modal = () => {
             <div className="event-form__time">
               <input
                 required
-                value={moment(date).format("yyyy-MM-DD")}
+                value={moment(date).format("YYYY-MM-DD")}
                 type="date"
                 name="date"
                 className="event-form__field"
