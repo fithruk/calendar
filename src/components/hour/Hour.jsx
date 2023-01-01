@@ -15,7 +15,7 @@ const Hour = ({ dataDay, dataHour, hourEvents, month }) => {
   const setPropertyYear = (month) => {
     if (
       new Date(month).getMonth(month) === 0 &&
-      new Date().getFullYear() === new Date().getFullYear()
+      new Date().getFullYear() !== new Date().getFullYear()
     ) {
       return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
     } else {
