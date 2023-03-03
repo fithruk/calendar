@@ -1,17 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import Event from "../event/Event";
 import RedLine from "../redLine/RedLine";
-import { Context } from "../context/context";
+
+import { useDispatch } from "react-redux";
 import { formatMins } from "../../../src/utils/dateUtils.js";
 
 const Hour = ({ dataDay, dataHour, hourEvents, month }) => {
-  const {
-    modalIsOpenStore: { setModalIsOpen },
-    modalFormStore: { modalFormData, setModalFormData },
-  } = useContext(Context);
-
+  const dispatch = useDispatch();
   const setPropertyYear = (month) => {
     if (
       new Date(month).getMonth(month) === 0 &&
@@ -24,7 +21,7 @@ const Hour = ({ dataDay, dataHour, hourEvents, month }) => {
   };
 
   const setDinamicEvent = (e) => {
-    setModalIsOpen(true);
+    dispatch({ type: "TOGGLE_OPEN_MODAL" });
 
     const date = new Date(
       setPropertyYear(e.target.dataset.month).getFullYear(),
@@ -33,11 +30,15 @@ const Hour = ({ dataDay, dataHour, hourEvents, month }) => {
       e.target.dataset.time
     );
 
-    setModalFormData({
-      ...modalFormData,
-      date,
-      dateFrom: date,
-      dateTo: new Date(new Date(date).setHours(new Date(date).getHours() + 1)),
+    dispatch({
+      type: "UPDATE_MODAL_GENERAL_DATE_DINAMIC",
+      payload: {
+        date,
+        dateFrom: date,
+        dateTo: new Date(
+          new Date(date).setHours(new Date(date).getHours() + 1)
+        ),
+      },
     });
   };
 

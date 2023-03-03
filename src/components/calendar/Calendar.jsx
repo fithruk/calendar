@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import Navigation from "./../navigation/Navigation";
@@ -6,14 +6,12 @@ import Week from "../week/Week";
 import Sidebar from "../sidebar/Sidebar";
 import Modal from "../modal/Modal";
 
-import { Context } from "../context/context";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./calendar.scss";
 
 const Calendar = () => {
-  const {
-    modalIsOpenStore: { modalIsOpen },
-  } = useContext(Context);
+  const { isOpen } = useSelector((state) => state.modalWindow);
 
   return (
     <section className="calendar">
@@ -22,7 +20,7 @@ const Calendar = () => {
         <div className="calendar__week-container">
           <Sidebar />
           <Week />
-          {modalIsOpen && <Modal />}
+          {isOpen && <Modal />}
         </div>
       </div>
     </section>

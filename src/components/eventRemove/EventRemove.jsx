@@ -1,19 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import "./eventRemove.scss";
-import { Context } from "../context/context";
+
+import { useSelector, useDispatch } from "react-redux";
 import { deleteDeprecatedEvent } from "../../gateway/apiEndpoints";
+import { loadEvents } from "../reducers/eventsReducer/eventsActions";
 
 const EventRemove = ({ id }) => {
-  const {
-    eventsStore: { eventsArr },
-    loadData,
-  } = useContext(Context);
-
+  const { eventsArr } = useSelector((state) => state.events);
+  const dispatch = useDispatch();
   const removeEvent = async (id) => {
     const setRemovePermition = eventsArr.find((item) => id === item.id);
-    console.log(new Date(setRemovePermition.date));
+
     if (
       new Date(setRemovePermition.date) < new Date() ||
       (new Date(setRemovePermition.date).getDate() === new Date().getDate() &&
@@ -26,7 +25,7 @@ const EventRemove = ({ id }) => {
     }
     try {
       await deleteDeprecatedEvent(id);
-      loadData();
+      dispatch(loadEvents());
     } catch (error) {
       throw new Error(error);
     }

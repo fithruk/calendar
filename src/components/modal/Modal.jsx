@@ -1,37 +1,29 @@
-import React, { useContext } from "react";
+import React from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
 
 import { setFormatPropertyMinutes } from "../../utils/dateUtils";
-import { addNewEvent } from "../../gateway/apiEndpoints";
-import { initialDateSettings } from "../../gateway/events";
+import { loadEvents } from "../reducers/eventsReducer/eventsActions";
+import { upLoadNewTask } from "../reducers/modalReducer/modalActions";
 import { dataValidate } from "../../utils/formValidator";
 
-import { Context } from "../context/context";
+import { useSelector, useDispatch } from "react-redux";
 import "./modal.scss";
 
 const Modal = () => {
-  const {
-    modalIsOpenStore: { setModalIsOpen },
-    modalFormStore: { modalFormData, setModalFormData },
-    eventsStore: { eventsArr },
-  } = useContext(Context);
-
-  const { dateFrom, dateTo, description, title, id, date } = modalFormData;
+  const { isOpen, date, dateFrom, dateTo, description, title } = useSelector(
+    (state) => state.modalWindow
+  );
+  const { eventsArr } = useSelector((state) => state.events);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "dateFrom") {
-      setModalFormData({
-        ...modalFormData,
-        dateFrom: new Date(
-          `${moment(date).format("Y-M-D")} ${setFormatPropertyMinutes(
-            name,
-            value
-          )}`
-        ),
-        date: new Date(
+      dispatch({
+        type: "UPDATE_MODAL_DATE_FROM",
+        payload: new Date(
           `${moment(date).format("YYYY-MM-DD")} ${setFormatPropertyMinutes(
             name,
             value
@@ -40,10 +32,10 @@ const Modal = () => {
       });
     }
     if (name === "dateTo") {
-      setModalFormData({
-        ...modalFormData,
-        dateTo: new Date(
-          `${moment(date).format("Y-M-D")} ${setFormatPropertyMinutes(
+      dispatch({
+        type: "UPDATE_MODAL_DATE_TO",
+        payload: new Date(
+          `${moment(date).format("YYYY-MM-DD")} ${setFormatPropertyMinutes(
             name,
             value
           )}`
@@ -51,47 +43,42 @@ const Modal = () => {
       });
     }
     if (name === "date") {
-      setModalFormData({
-        ...modalFormData,
-        date: new Date(value),
-        dateFrom: new Date(value),
-        dateTo: new Date(value),
+      dispatch({
+        type: "UPDATE_MODAL_GENERAL_DATE",
+        payload: {
+          date: new Date(value),
+          dateFrom: new Date(value),
+          dateTo: new Date(value),
+        },
       });
     }
     if (name === "title") {
-      setModalFormData({
-        ...modalFormData,
-        title: value,
+      dispatch({
+        type: "UPDATE_MODAL_TITLE",
+        payload: value,
       });
     }
     if (name === "description") {
-      setModalFormData({
-        ...modalFormData,
-        description: value,
+      dispatch({
+        type: "UPDATE_MODAL_DESCRIPTION",
+        payload: value,
       });
     }
   };
 
-  const upLoadNewTask = async (newTask) => {
-    try {
-      await addNewEvent(newTask);
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
-  const submitModal = (e) => {
+  const submitModal = async (e) => {
     e.preventDefault();
     const isntValid = dataValidate(dateFrom, dateTo, date, eventsArr);
     if (isntValid) {
       isntValid.forEach(({ msg }) => alert(msg));
-      setModalIsOpen(false);
-      setModalFormData(initialDateSettings);
+      dispatch({ type: "TOGGLE_OPEN_MODAL" });
+
       return;
     }
 
-    upLoadNewTask(modalFormData);
-    setModalIsOpen(false);
+    await upLoadNewTask({ date, dateFrom, dateTo, description, title });
+    dispatch({ type: "TOGGLE_OPEN_MODAL" });
+    dispatch(loadEvents());
   };
 
   return (
@@ -100,7 +87,7 @@ const Modal = () => {
         <div className="create-event">
           <button
             className="create-event__close-btn"
-            onClick={() => setModalIsOpen(false)}
+            onClick={() => dispatch({ type: "TOGGLE_OPEN_MODAL" })}
           >
             +
           </button>

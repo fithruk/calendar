@@ -70,13 +70,8 @@ const setRoundMinutes = (minutes) => {
   }
 };
 
-export const setFormatPropertyMinutes = (name, time, minures) => {
-  if (name === "dateFrom") {
-    const houres = time.substring(0, 3);
-    const minutes = time.substring(3);
-    return `${houres}${setRoundMinutes(minutes)}`;
-  }
-  if (name === "dateTo") {
+export const setFormatPropertyMinutes = (name, time) => {
+  if (name === "dateFrom" || name === "dateTo") {
     const houres = time.substring(0, 3);
     const minutes = time.substring(3);
     return `${houres}${setRoundMinutes(minutes)}`;
