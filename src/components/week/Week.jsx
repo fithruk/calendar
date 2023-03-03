@@ -1,15 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import Day from "../day/Day";
-import { Context } from "../context/context";
+
+import { useSelector } from "react-redux";
 import "./week.scss";
 
 const Week = () => {
-  const {
-    dayStartStore: { weekDates },
-    eventsStore: { eventsArr },
-  } = useContext(Context);
+  const { weekDates, weekStartDate } = useSelector((state) => state.actualWeek);
+  const { eventsArr } = useSelector((state) => state.events);
 
   return (
     <div className="calendar__week">

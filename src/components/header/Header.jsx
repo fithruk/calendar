@@ -1,32 +1,34 @@
-import React, { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-import { Context } from "../context/context";
+import { useSelector, useDispatch } from "react-redux";
+
 import { months } from "../../utils/dateUtils";
 import "./header.scss";
 
 const Header = () => {
-  const {
-    dayStartStore: { weekDates, setWeekStartDate, weekStartDate },
-    modalIsOpenStore: { setModalIsOpen },
-  } = useContext(Context);
+  const { weekDates, weekStartDate } = useSelector((state) => state.actualWeek);
+  const dispatch = useDispatch();
 
   const throwForvard = () => {
     const oneDay = Date.parse(weekStartDate);
     const days = Math.floor(1000 * 60 * 60 * 24);
     const next = oneDay + days * 7;
-    setWeekStartDate(new Date(next));
+    dispatch({ type: "SET_NEW_DATE", payload: new Date(next) });
+    dispatch({ type: "SET_NEW_WEEK" });
   };
 
   const throwBack = () => {
     const oneDay = Date.parse(weekStartDate);
     const days = Math.floor(1000 * 60 * 60 * 24);
     const next = oneDay - days * 7;
-    setWeekStartDate(new Date(next));
+    dispatch({ type: "SET_NEW_DATE", payload: new Date(next) });
+    dispatch({ type: "SET_NEW_WEEK" });
   };
 
   const throwNow = () => {
-    setWeekStartDate(new Date());
+    dispatch({ type: "SET_NEW_DATE", payload: new Date() });
+    dispatch({ type: "SET_NEW_WEEK" });
   };
 
   const displayedMonth = Array.from(weekDates)
@@ -43,7 +45,7 @@ const Header = () => {
     <header className="header">
       <button
         className="button create-event-btn"
-        onClick={() => setModalIsOpen(true)}
+        onClick={() => dispatch({ type: "TOGGLE_OPEN_MODAL" })}
       >
         <i className="fas fa-plus create-event-btn__icon"></i>
         Create

@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import { days } from "../../utils/dateUtils.js";
-import { Context } from "../context/context";
+
+import { useSelector } from "react-redux";
 
 const Navigation = () => {
-  const {
-    dayStartStore: { weekDates },
-  } = useContext(Context);
+  const { weekDates, weekStartDate } = useSelector((state) => state.actualWeek);
+
   return (
     <header className="calendar__header">
       {weekDates.map((dayDate) => {
