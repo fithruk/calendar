@@ -1,4 +1,4 @@
-const link = "http://localhost:5000";
+const link = "https://calendarserver.onrender.com";
 
 const getAllEvents = async (headers) => {
   const res = await fetch(`${link}/calendar`, { headers });
