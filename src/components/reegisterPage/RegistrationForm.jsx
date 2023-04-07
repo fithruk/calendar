@@ -1,0 +1,109 @@
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { registration } from "../../gateway/apiEndpoints";
+import { setMessages } from "../reducers/eventsReducer/eventsActions";
+import { TextField, Box, Typography, Button, Alert } from "@mui/material";
+import { useNavigate } from "react-router";
+
+const RefistrationForm = () => {
+  const [input, setInput] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
+  const { messages } = useSelector((state) => state.events);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const inputHandler = (e) => {
+    setInput((state) => ({ ...state, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await registration(input);
+      if (res.msg) {
+        navigate("/");
+        dispatch(setMessages(res));
+        setInput({ name: "", email: "", password: "", confirm: "" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      dispatch({ type: "SET_MESSAGES", payload: {} });
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [messages]);
+
+  return (
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        width: "40vw",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        margin: "30vh auto",
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      {messages.msg && <Alert severity="success">{messages.msg}</Alert>}
+      <Typography component={"h1"} textAlign={"center"}>
+        Register
+      </Typography>
+      <TextField
+        id="name"
+        label="name"
+        name="name"
+        variant="outlined"
+        value={input.name}
+        onChange={inputHandler}
+        sx={{ marginTop: "10px" }}
+      />
+      <TextField
+        id="email"
+        label="email"
+        name="email"
+        variant="outlined"
+        value={input.email}
+        onChange={inputHandler}
+        sx={{ marginTop: "10px" }}
+      />
+      <TextField
+        id="password"
+        label="password"
+        name="password"
+        variant="outlined"
+        value={input.password}
+        onChange={inputHandler}
+        type="password"
+        sx={{ marginTop: "10px" }}
+      />
+      <TextField
+        id="confirm password"
+        label="confirm password"
+        name="confirm"
+        variant="outlined"
+        value={input.confirm}
+        onChange={inputHandler}
+        type="password"
+        sx={{ marginTop: "10px" }}
+      />
+      <Button type="submit">submit</Button>
+    </Box>
+  );
+};
+
+export default RefistrationForm;
