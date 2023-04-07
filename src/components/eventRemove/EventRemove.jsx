@@ -10,6 +10,7 @@ import { loadEvents } from "../reducers/eventsReducer/eventsActions";
 const EventRemove = ({ id }) => {
   const { eventsArr } = useSelector((state) => state.events);
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
   const removeEvent = async (id) => {
     const setRemovePermition = eventsArr.find((item) => id === item.id);
 
@@ -24,7 +25,7 @@ const EventRemove = ({ id }) => {
       return;
     }
     try {
-      await deleteDeprecatedEvent(id);
+      await deleteDeprecatedEvent(id, token);
       dispatch(loadEvents());
     } catch (error) {
       throw new Error(error);

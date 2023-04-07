@@ -1,7 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import { Button } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import {
+  leaveCurrentSession,
+  setMessages,
+} from "../reducers/eventsReducer/eventsActions";
 
 import { months } from "../../utils/dateUtils";
 import "./header.scss";
@@ -9,7 +15,7 @@ import "./header.scss";
 const Header = () => {
   const { weekDates, weekStartDate } = useSelector((state) => state.actualWeek);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const throwForvard = () => {
     const oneDay = Date.parse(weekStartDate);
     const days = Math.floor(1000 * 60 * 60 * 24);
@@ -41,27 +47,39 @@ const Header = () => {
         {`${months[month].substring(0, 3)}  `}
       </span>
     ));
+
+  const leaveHandler = async () => {
+    const res = await leaveCurrentSession();
+    dispatch(setMessages(res));
+    navigate("/");
+  };
+
   return (
     <header className="header">
-      <button
-        className="button create-event-btn"
-        onClick={() => dispatch({ type: "TOGGLE_OPEN_MODAL" })}
-      >
-        <i className="fas fa-plus create-event-btn__icon"></i>
-        Create
-      </button>
-      <div className="navigation">
-        <button className="navigation__today-btn button" onClick={throwNow}>
-          Today
+      <div className="wrapper">
+        <button
+          className="button create-event-btn"
+          onClick={() => dispatch({ type: "TOGGLE_OPEN_MODAL" })}
+        >
+          <i className="fas fa-plus create-event-btn__icon"></i>
+          Create
         </button>
-        <button className="icon-button navigation__nav-icon">
-          <i className="fas fa-chevron-left" onClick={throwBack}></i>
-        </button>
-        <button className="icon-button navigation__nav-icon">
-          <i className="fas fa-chevron-right" onClick={throwForvard}></i>
-        </button>
-        <span className="navigation__displayed-month">{displayedMonth}</span>
+        <div className="navigation">
+          <button className="navigation__today-btn button" onClick={throwNow}>
+            Today
+          </button>
+          <button className="icon-button navigation__nav-icon">
+            <i className="fas fa-chevron-left" onClick={throwBack}></i>
+          </button>
+          <button className="icon-button navigation__nav-icon">
+            <i className="fas fa-chevron-right" onClick={throwForvard}></i>
+          </button>
+          <span className="navigation__displayed-month">{displayedMonth}</span>
+        </div>
       </div>
+      <Button variant="contained" onClick={leaveHandler}>
+        Logout
+      </Button>
     </header>
   );
 };

@@ -1,5 +1,7 @@
 const initialState = {
   eventsArr: [],
+  error: {},
+  messages: {},
 };
 
 const eventsReducer = (state = initialState, action) => {
@@ -9,6 +11,19 @@ const eventsReducer = (state = initialState, action) => {
         ...state,
         eventsArr: (state.eventsArr = action.payload),
       };
+
+    case "SET_ERRORS": {
+      return {
+        ...state,
+        error: (state.error = action.payload),
+      };
+    }
+    case "SET_MESSAGES": {
+      return {
+        ...state,
+        messages: (state.messages = action.payload),
+      };
+    }
     default:
       return state;
   }

@@ -3,6 +3,14 @@
   height: 60px;
   padding: 0 48px;
   align-items: center;
+  justify-content: space-between;
+}
+
+.wrapper {
+  display: flex;
+  height: 60px;
+  padding: 0 48px;
+  align-items: center;
 }
 
 .create-event-btn {

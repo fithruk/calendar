@@ -1,23 +1,20 @@
 import React, { useEffect } from "react";
-import Header from "./components/header/Header.jsx";
-import Calendar from "./components/calendar/Calendar.jsx";
-import { useDispatch } from "react-redux";
+import CalendarPage from "./components/calendarPage/CalendarPage.jsx";
+import RegistrationPage from "./components/reegisterPage/Page.jsx";
 
-import { loadEvents } from "./components/reducers/eventsReducer/eventsActions.js";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./common.scss";
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadEvents());
-  }, []);
-
   return (
     <>
-      <Header />
-      <Calendar />
+      <Router>
+        <Routes>
+          <Route path="/" element={<RegistrationPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+        </Routes>
+      </Router>
     </>
   );
 };

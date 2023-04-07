@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { setFormatPropertyMinutes } from "../../utils/dateUtils";
 import { loadEvents } from "../reducers/eventsReducer/eventsActions";
-import { upLoadNewTask } from "../reducers/modalReducer/modalActions";
+import { upLoadNewTask } from "../reducers/eventsReducer/eventsActions";
 import { dataValidate } from "../../utils/formValidator";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ const Modal = () => {
   const { isOpen, date, dateFrom, dateTo, description, title } = useSelector(
     (state) => state.modalWindow
   );
+  const token = localStorage.getItem("token");
   const { eventsArr } = useSelector((state) => state.events);
   const dispatch = useDispatch();
 
@@ -76,7 +77,7 @@ const Modal = () => {
       return;
     }
 
-    await upLoadNewTask({ date, dateFrom, dateTo, description, title });
+    await upLoadNewTask({ date, dateFrom, dateTo, description, title }, token);
     dispatch({ type: "TOGGLE_OPEN_MODAL" });
     dispatch(loadEvents());
   };
