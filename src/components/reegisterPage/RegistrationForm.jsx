@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { registration } from "../../gateway/apiEndpoints";
+import Spinner from "../spinner/Spinner";
 import { setMessages } from "../reducers/eventsReducer/eventsActions";
 import { TextField, Box, Typography, Button, Alert } from "@mui/material";
 import { useNavigate } from "react-router";
@@ -13,6 +14,7 @@ const RefistrationForm = () => {
     confirm: "",
   });
   const { messages } = useSelector((state) => state.events);
+  const { displaySpinner } = useSelector((state) => state.spinner);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -26,6 +28,7 @@ const RefistrationForm = () => {
     try {
       const res = await registration(input);
       if (res.msg) {
+        toggleSpinner();
         navigate("/");
         dispatch(setMessages(res));
         setInput({ name: "", email: "", password: "", confirm: "" });
@@ -33,6 +36,10 @@ const RefistrationForm = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const toggleSpinner = () => {
+    dispatch({ type: "TOGGLE_SPINNER" });
   };
 
   useEffect(() => {
@@ -44,6 +51,10 @@ const RefistrationForm = () => {
       clearTimeout(timeOut);
     };
   }, [messages]);
+
+  const isDisable = (input) => {
+    return Object.values(input).some((i) => i === "");
+  };
 
   return (
     <Box
@@ -59,6 +70,7 @@ const RefistrationForm = () => {
       noValidate
       autoComplete="off"
     >
+      {displaySpinner && <Spinner />}
       {messages.msg && <Alert severity="success">{messages.msg}</Alert>}
       <Typography component={"h1"} textAlign={"center"}>
         Register
@@ -101,7 +113,9 @@ const RefistrationForm = () => {
         type="password"
         sx={{ marginTop: "10px" }}
       />
-      <Button type="submit">submit</Button>
+      <Button type="submit" disabled={isDisable(input)} onClick={toggleSpinner}>
+        submit
+      </Button>
     </Box>
   );
 };
