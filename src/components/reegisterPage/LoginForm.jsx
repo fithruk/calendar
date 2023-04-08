@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Box, Typography, Button, Alert } from "@mui/material";
+import Spinner from "../spinner/Spinner";
 import { setError } from "../reducers/eventsReducer/eventsActions";
 import { login } from "../../gateway/apiEndpoints";
 import { useNavigate } from "react-router";
@@ -13,7 +14,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { error, messages } = useSelector((state) => state.events);
-
+  const { displaySpinner } = useSelector((state) => state.spinner);
   const inputHandler = (e) => {
     setInput((state) => ({ ...state, [e.target.name]: e.target.value }));
   };
@@ -23,10 +24,17 @@ const LoginForm = () => {
 
     const res = await login(input);
     localStorage.setItem("token", res.candidate);
+    toggleSpinner();
     if (res.candidate) {
       dispatch(setError({}));
       navigate(`/calendar`);
+    } else {
+      dispatch(setError(res));
     }
+  };
+
+  const toggleSpinner = () => {
+    dispatch({ type: "TOGGLE_SPINNER" });
   };
   return (
     <Box
@@ -42,6 +50,7 @@ const LoginForm = () => {
       noValidate
       autoComplete="off"
     >
+      {displaySpinner && <Spinner />}
       {error.msg && (
         <Alert severity="error">
           {" "}
@@ -74,6 +83,7 @@ const LoginForm = () => {
 
       <Button
         type="submit"
+        onClick={toggleSpinner}
         disabled={input.lemail === "" || input.lpassword === ""}
       >
         submit
