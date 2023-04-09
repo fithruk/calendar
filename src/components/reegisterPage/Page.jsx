@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextField, Box, Typography, Tabs, Tab } from "@mui/material";
 import RefistrationForm from "./RegistrationForm";
 import LoginForm from "./LoginForm";
+import Preview from "./Preview";
 
 function RegistrationPage() {
   const [value, setValue] = useState(0);
@@ -47,6 +48,7 @@ function RegistrationPage() {
         >
           <Tab label="Login" {...a11yProps(0)} />
           <Tab label="Registration" {...a11yProps(1)} />
+          <Tab label="Preview" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -54,6 +56,9 @@ function RegistrationPage() {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <RefistrationForm />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <Preview />
       </TabPanel>
     </Box>
   );
