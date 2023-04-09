@@ -60,7 +60,7 @@ const RefistrationForm = () => {
     <>
       {displaySpinner && (
         <>
-          <Alert security="warning">
+          <Alert severity="warning">
             First launch of application can to take over 30 seconds, because
             server was placed on free plan and has limits to speed of loading
           </Alert>
