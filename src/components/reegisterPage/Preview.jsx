@@ -6,15 +6,14 @@ const Preview = () => {
     <Box
       sx={{
         width: "70vw",
-        height: "70vw",
-        margin: "50px auto",
-        maxHeight: "100vh",
+        height: "auto",
+        margin: "auto",
       }}
     >
       <Typography
         component="h1"
         textAlign={"center"}
-        sx={{ margin: "50px auto" }}
+        sx={{ margin: "20px auto" }}
       >
         Preview
       </Typography>
