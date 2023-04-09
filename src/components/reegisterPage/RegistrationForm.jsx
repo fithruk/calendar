@@ -59,13 +59,13 @@ const RefistrationForm = () => {
   return (
     <>
       {displaySpinner && (
-        <>
+        <Box sx={{ position: "fixed", top: "100px", left: "23.5vw" }}>
           <Alert severity="warning">
             First launch of application can to take over 30 seconds, because
             server was placed on free plan and has limits to speed of loading
           </Alert>
           <Spinner />
-        </>
+        </Box>
       )}
       <Box
         component="form"
