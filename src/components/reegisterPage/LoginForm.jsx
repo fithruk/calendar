@@ -37,58 +37,68 @@ const LoginForm = () => {
     dispatch({ type: "TOGGLE_SPINNER" });
   };
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        width: "40vw",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        margin: "30vh auto",
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      {displaySpinner && <Spinner />}
-      {error.msg && (
-        <Alert severity="error">
-          {" "}
-          {error.err} - {error.msg}
-        </Alert>
+    <>
+      {displaySpinner && (
+        <>
+          <Alert security="warning">
+            First launch of application can to take over 30 seconds, because
+            server was placed on free plan and has limits to speed of loading
+          </Alert>
+          <Spinner />
+        </>
       )}
-      {messages.msg && <Alert security="succes">{messages.msg} </Alert>}
-      <Typography component={"h1"} textAlign={"center"}>
-        Login
-      </Typography>
-      <TextField
-        id="email"
-        label="email"
-        name="lemail"
-        variant="outlined"
-        value={input.lemail}
-        onChange={inputHandler}
-        sx={{ marginTop: "10px" }}
-      />
-      <TextField
-        id="password"
-        label="password"
-        name="lpassword"
-        variant="outlined"
-        value={input.lpassword}
-        onChange={inputHandler}
-        type="password"
-        sx={{ marginTop: "10px" }}
-      />
-
-      <Button
-        type="submit"
-        onClick={toggleSpinner}
-        disabled={input.lemail === "" || input.lpassword === ""}
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          width: "40vw",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          margin: "30vh auto",
+        }}
+        noValidate
+        autoComplete="off"
       >
-        submit
-      </Button>
-    </Box>
+        {error.msg && (
+          <Alert severity="error">
+            {" "}
+            {error.err} - {error.msg}
+          </Alert>
+        )}
+        {messages.msg && <Alert security="succes">{messages.msg} </Alert>}
+        <Typography component={"h1"} textAlign={"center"}>
+          Login
+        </Typography>
+        <TextField
+          id="email"
+          label="email"
+          name="lemail"
+          variant="outlined"
+          value={input.lemail}
+          onChange={inputHandler}
+          sx={{ marginTop: "10px" }}
+        />
+        <TextField
+          id="password"
+          label="password"
+          name="lpassword"
+          variant="outlined"
+          value={input.lpassword}
+          onChange={inputHandler}
+          type="password"
+          sx={{ marginTop: "10px" }}
+        />
+
+        <Button
+          type="submit"
+          onClick={toggleSpinner}
+          disabled={input.lemail === "" || input.lpassword === ""}
+        >
+          submit
+        </Button>
+      </Box>
+    </>
   );
 };
 

@@ -57,66 +57,80 @@ const RefistrationForm = () => {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        width: "40vw",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        margin: "30vh auto",
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      {displaySpinner && <Spinner />}
-      {messages.msg && <Alert severity="success">{messages.msg}</Alert>}
-      <Typography component={"h1"} textAlign={"center"}>
-        Register
-      </Typography>
-      <TextField
-        id="name"
-        label="name"
-        name="name"
-        variant="outlined"
-        value={input.name}
-        onChange={inputHandler}
-        sx={{ marginTop: "10px" }}
-      />
-      <TextField
-        id="email"
-        label="email"
-        name="email"
-        variant="outlined"
-        value={input.email}
-        onChange={inputHandler}
-        sx={{ marginTop: "10px" }}
-      />
-      <TextField
-        id="password"
-        label="password"
-        name="password"
-        variant="outlined"
-        value={input.password}
-        onChange={inputHandler}
-        type="password"
-        sx={{ marginTop: "10px" }}
-      />
-      <TextField
-        id="confirm password"
-        label="confirm password"
-        name="confirm"
-        variant="outlined"
-        value={input.confirm}
-        onChange={inputHandler}
-        type="password"
-        sx={{ marginTop: "10px" }}
-      />
-      <Button type="submit" disabled={isDisable(input)} onClick={toggleSpinner}>
-        submit
-      </Button>
-    </Box>
+    <>
+      {displaySpinner && (
+        <>
+          <Alert security="warning">
+            First launch of application can to take over 30 seconds, because
+            server was placed on free plan and has limits to speed of loading
+          </Alert>
+          <Spinner />
+        </>
+      )}
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          width: "40vw",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          margin: "30vh auto",
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        {messages.msg && <Alert severity="success">{messages.msg}</Alert>}
+        <Typography component={"h1"} textAlign={"center"}>
+          Register
+        </Typography>
+        <TextField
+          id="name"
+          label="name"
+          name="name"
+          variant="outlined"
+          value={input.name}
+          onChange={inputHandler}
+          sx={{ marginTop: "10px" }}
+        />
+        <TextField
+          id="email"
+          label="email"
+          name="email"
+          variant="outlined"
+          value={input.email}
+          onChange={inputHandler}
+          sx={{ marginTop: "10px" }}
+        />
+        <TextField
+          id="password"
+          label="password"
+          name="password"
+          variant="outlined"
+          value={input.password}
+          onChange={inputHandler}
+          type="password"
+          sx={{ marginTop: "10px" }}
+        />
+        <TextField
+          id="confirm password"
+          label="confirm password"
+          name="confirm"
+          variant="outlined"
+          value={input.confirm}
+          onChange={inputHandler}
+          type="password"
+          sx={{ marginTop: "10px" }}
+        />
+        <Button
+          type="submit"
+          disabled={isDisable(input)}
+          onClick={toggleSpinner}
+        >
+          submit
+        </Button>
+      </Box>
+    </>
   );
 };
 
