@@ -30,7 +30,7 @@ const LoginForm = () => {
       [e.target.name]: e.target.value.toLowerCase(),
     }));
   };
-
+  console.log(displaySpinner);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,10 +42,10 @@ const LoginForm = () => {
         })
       );
     }
-
+    toggleSpinner();
     const res = await login(input);
     localStorage.setItem("token", res.candidate);
-    toggleSpinner();
+
     if (res.candidate) {
       dispatch(
         setError({
@@ -69,7 +69,7 @@ const LoginForm = () => {
   const toggleSpinner = () => {
     dispatch({ type: "TOGGLE_SPINNER" });
   };
-  console.log(error);
+
   return (
     <>
       {displaySpinner && (
