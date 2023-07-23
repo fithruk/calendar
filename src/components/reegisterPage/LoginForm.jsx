@@ -18,10 +18,11 @@ const LoginForm = () => {
   const { displaySpinner } = useSelector((state) => state.spinner);
   const inputHandler = (e) => {
     if (error.msg) {
+      console.log(error);
       dispatch(
         setError({
           type: "SET_ERRORS",
-          payload: {},
+          payload: null,
         })
       );
     }
@@ -38,7 +39,7 @@ const LoginForm = () => {
       return dispatch(
         setError({
           type: "SET_ERRORS",
-          payload: { msg: "Input correct email" },
+          payload: "Input correct email",
         })
       );
     }
@@ -47,17 +48,29 @@ const LoginForm = () => {
     localStorage.setItem("token", res.candidate);
     toggleSpinner();
     if (res.candidate) {
-      dispatch(setError({}));
+      dispatch(
+        setError({
+          type: "SET_ERRORS",
+          payload: null,
+        })
+      );
+      toggleSpinner();
       navigate(`/calendar`);
     } else {
-      dispatch(setError(res));
+      dispatch(
+        setError({
+          type: "SET_ERRORS",
+          payload: res.msg,
+        })
+      );
+      toggleSpinner();
     }
   };
 
   const toggleSpinner = () => {
     dispatch({ type: "TOGGLE_SPINNER" });
   };
-
+  console.log(error);
   return (
     <>
       {displaySpinner && (
