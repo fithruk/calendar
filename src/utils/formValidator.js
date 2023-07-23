@@ -36,4 +36,12 @@ const dataValidate = (dateStart, dateEnd, dateOfEvent, arrEvenst) => {
   return null;
 };
 
-export { dataValidate };
+const inputValidator = (email) => {
+  if (!email.includes("@") || !email.includes(".")) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export { dataValidate, inputValidator };

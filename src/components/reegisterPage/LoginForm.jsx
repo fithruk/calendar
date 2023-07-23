@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextField, Box, Typography, Button, Alert } from "@mui/material";
 import Spinner from "../spinner/Spinner";
 import { setError } from "../reducers/eventsReducer/eventsActions";
+import { inputValidator } from "../../utils/formValidator";
 import { login } from "../../gateway/apiEndpoints";
 import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,11 +17,31 @@ const LoginForm = () => {
   const { error, messages } = useSelector((state) => state.events);
   const { displaySpinner } = useSelector((state) => state.spinner);
   const inputHandler = (e) => {
-    setInput((state) => ({ ...state, [e.target.name]: e.target.value }));
+    if (error.msg) {
+      dispatch(
+        setError({
+          type: "SET_ERRORS",
+          payload: {},
+        })
+      );
+    }
+    setInput((state) => ({
+      ...state,
+      [e.target.name]: e.target.value.toLowerCase(),
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!inputValidator(input.lemail)) {
+      return dispatch(
+        setError({
+          type: "SET_ERRORS",
+          payload: { msg: "Input correct email" },
+        })
+      );
+    }
 
     const res = await login(input);
     localStorage.setItem("token", res.candidate);
@@ -36,6 +57,7 @@ const LoginForm = () => {
   const toggleSpinner = () => {
     dispatch({ type: "TOGGLE_SPINNER" });
   };
+
   return (
     <>
       {displaySpinner && (
@@ -44,7 +66,6 @@ const LoginForm = () => {
             First launch of application can to take over 30 seconds, because
             server was placed on free plan and has limits to speed of loading
           </Alert>
-          <Spinner />
         </Box>
       )}
       <Box
@@ -60,12 +81,7 @@ const LoginForm = () => {
         noValidate
         autoComplete="off"
       >
-        {error.msg && (
-          <Alert severity="error">
-            {" "}
-            {error.err} - {error.msg}
-          </Alert>
-        )}
+        {error.msg && <Alert severity="error"> {error.msg}</Alert>}
         {messages.msg && <Alert security="succes">{messages.msg} </Alert>}
         <Typography component={"h1"} textAlign={"center"}>
           Login
@@ -92,10 +108,10 @@ const LoginForm = () => {
 
         <Button
           type="submit"
-          onClick={toggleSpinner}
+          onClick={(e) => handleSubmit(e)}
           disabled={input.lemail === "" || input.lpassword === ""}
         >
-          submit
+          {displaySpinner ? <Spinner /> : "submit"}
         </Button>
       </Box>
     </>
