@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import EventRemove from "../eventRemove/EventRemove";
 import "./event.scss";
 
-const Event = ({ height, marginTop, title, time, id }) => {
+const Event = ({ height, top, title, time, id }) => {
   const [removeBtn, setRemoveBtn] = useState(false);
   const eventStyle = {
     height,
-    marginTop,
+    top,
   };
 
   return (

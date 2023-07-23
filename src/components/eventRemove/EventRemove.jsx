@@ -15,7 +15,7 @@ const EventRemove = ({ id }) => {
     const setRemovePermition = eventsArr.find((item) => id === item.id);
 
     if (
-      new Date(setRemovePermition.date) < new Date() ||
+      new Date(setRemovePermition.dateFrom) < new Date() ||
       (new Date(setRemovePermition.date).getDate() === new Date().getDate() &&
         new Date(setRemovePermition.dateFrom).getHours() ===
           new Date().getHours() + 1 &&
