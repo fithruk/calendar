@@ -13,10 +13,9 @@ const eventsReducer = (state = initialState, action) => {
       };
 
     case "SET_ERRORS": {
-      console.log(action.payload);
       return {
         ...state,
-        error: (state.error = action.payload.payload),
+        error: { ...state.error, msg: action.payload.payload },
       };
     }
     case "SET_MESSAGES": {

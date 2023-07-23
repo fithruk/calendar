@@ -31,7 +31,7 @@ const loadEvents = () => {
         dispatch(setError(data));
       }
     } catch (error) {
-      throw new Error(error);
+      console.log(error);
     }
   };
 };

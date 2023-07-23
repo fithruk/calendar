@@ -19,7 +19,7 @@ const Calendar = () => {
   const { isOpen } = useSelector((state) => state.modalWindow);
   const { error } = useSelector((state) => state.events);
   useEffect(() => {
-    if (error.err) {
+    if (error.msg) {
       localStorage.removeItem("token");
       navigate("/");
     }
