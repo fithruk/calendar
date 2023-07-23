@@ -24,7 +24,7 @@ const RefistrationForm = () => {
       dispatch(
         setError({
           type: "SET_ERRORS",
-          payload: {},
+          payload: null,
         })
       );
     }
@@ -42,7 +42,7 @@ const RefistrationForm = () => {
       return dispatch(
         setError({
           type: "SET_ERRORS",
-          payload: { msg: "Input correct email" },
+          payload: "Input correct email",
         })
       );
     }
