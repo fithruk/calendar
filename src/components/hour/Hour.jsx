@@ -56,7 +56,6 @@ const Hour = ({ dataDay, dataHour, hourEvents, month }) => {
       data-month={month}
       onClick={setDinamicEvent}
     >
-      {/* if no events in the current hour nothing will render here */}
       {hourEvents.map(({ id, dateFrom, dateTo, title }) => {
         const eventStart = `${new Date(dateFrom).getHours()}:${formatMins(
           new Date(dateFrom).getMinutes()
@@ -69,12 +68,11 @@ const Hour = ({ dataDay, dataHour, hourEvents, month }) => {
           <Event
             id={id}
             key={id}
-            //calculating event height = duration of event in minutes
             height={
               (new Date(dateTo).getTime() - new Date(dateFrom).getTime()) /
               (1000 * 60)
             }
-            marginTop={new Date(dateFrom).getMinutes()}
+            top={new Date(dateFrom).getMinutes()}
             time={`${eventStart} - ${eventEnd}`}
             title={title}
           />

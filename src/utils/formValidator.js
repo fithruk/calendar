@@ -7,7 +7,7 @@ const dataValidate = (dateStart, dateEnd, dateOfEvent, arrEvenst) => {
       msg: "Event can not be longer then 6 hours, you have to cut it",
     });
   }
-  if (dateOfEvent < new Date()) {
+  if (dateStart < new Date()) {
     errors.push({
       msg: "Your event have to be in a future, set properly date",
     });

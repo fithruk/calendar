@@ -18,7 +18,6 @@ const LoginForm = () => {
   const { displaySpinner } = useSelector((state) => state.spinner);
   const inputHandler = (e) => {
     if (error.msg) {
-      console.log(error);
       dispatch(
         setError({
           type: "SET_ERRORS",
