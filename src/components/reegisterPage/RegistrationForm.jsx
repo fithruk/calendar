@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { registration } from "../../gateway/apiEndpoints";
 import Spinner from "../spinner/Spinner";
-import { setMessages } from "../reducers/eventsReducer/eventsActions";
+import { setMessages, setError } from "../reducers/eventsReducer/eventsActions";
 import { TextField, Box, Typography, Button, Alert } from "@mui/material";
 import { useNavigate } from "react-router";
+import { inputValidator } from "../../utils/formValidator";
 
 const RefistrationForm = () => {
   const [input, setInput] = useState({
@@ -13,22 +14,42 @@ const RefistrationForm = () => {
     password: "",
     confirm: "",
   });
-  const { messages } = useSelector((state) => state.events);
+  const { messages, error } = useSelector((state) => state.events);
   const { displaySpinner } = useSelector((state) => state.spinner);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const inputHandler = (e) => {
-    setInput((state) => ({ ...state, [e.target.name]: e.target.value }));
+    if (error.msg) {
+      dispatch(
+        setError({
+          type: "SET_ERRORS",
+          payload: {},
+        })
+      );
+    }
+
+    setInput((state) => ({
+      ...state,
+      [e.target.name]: e.target.value.toLowerCase(),
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!inputValidator(input.email)) {
+      return dispatch(
+        setError({
+          type: "SET_ERRORS",
+          payload: { msg: "Input correct email" },
+        })
+      );
+    }
+    toggleSpinner();
     try {
       const res = await registration(input);
       if (res.msg) {
-        toggleSpinner();
         navigate("/");
         dispatch(setMessages(res));
         setInput({ name: "", email: "", password: "", confirm: "" });
@@ -64,7 +85,6 @@ const RefistrationForm = () => {
             First launch of application can to take over 30 seconds, because
             server was placed on free plan and has limits to speed of loading
           </Alert>
-          <Spinner />
         </Box>
       )}
       <Box
@@ -81,6 +101,7 @@ const RefistrationForm = () => {
         autoComplete="off"
       >
         {messages.msg && <Alert severity="success">{messages.msg}</Alert>}
+        {error.msg && <Alert severity="error"> {error.msg}</Alert>}
         <Typography component={"h1"} textAlign={"center"}>
           Register
         </Typography>
@@ -125,9 +146,9 @@ const RefistrationForm = () => {
         <Button
           type="submit"
           disabled={isDisable(input)}
-          onClick={toggleSpinner}
+          onClick={(e) => handleSubmit(e)}
         >
-          submit
+          {displaySpinner ? <Spinner /> : "submit"}
         </Button>
       </Box>
     </>
