@@ -4,6 +4,7 @@ const initialState = {
   dateTo: new Date(new Date().setHours(new Date().getHours() + 1)),
   description: "",
   title: "",
+  category: "work",
   isOpen: false,
 };
 
@@ -42,6 +43,11 @@ const modalReducer = (state = initialState, action) => {
       return {
         ...state,
         title: (state.title = action.payload),
+      };
+    case "UPDATE_MODAL_CATEGORY":
+      return {
+        ...state,
+        category: (state.category = action.payload),
       };
     case "UPDATE_MODAL_DESCRIPTION":
       return {

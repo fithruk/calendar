@@ -11,9 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import "./modal.scss";
 
 const Modal = () => {
-  const { isOpen, date, dateFrom, dateTo, description, title } = useSelector(
-    (state) => state.modalWindow
-  );
+  const { isOpen, date, dateFrom, dateTo, description, title, category } =
+    useSelector((state) => state.modalWindow);
   const token = localStorage.getItem("token");
   const { eventsArr } = useSelector((state) => state.events);
   const dispatch = useDispatch();
@@ -59,6 +58,12 @@ const Modal = () => {
         payload: value,
       });
     }
+    if (name === "category") {
+      dispatch({
+        type: "UPDATE_MODAL_CATEGORY",
+        payload: value,
+      });
+    }
     if (name === "description") {
       dispatch({
         type: "UPDATE_MODAL_DESCRIPTION",
@@ -77,8 +82,15 @@ const Modal = () => {
       return;
     }
 
-    await upLoadNewTask({ date, dateFrom, dateTo, description, title }, token);
+    await upLoadNewTask(
+      { date, dateFrom, dateTo, description, title, category },
+      token
+    );
     dispatch({ type: "TOGGLE_OPEN_MODAL" });
+    dispatch({
+      type: "UPDATE_MODAL_CATEGORY",
+      payload: "work",
+    });
     dispatch(loadEvents());
   };
 
@@ -128,6 +140,26 @@ const Modal = () => {
                 className="event-form__field"
                 onChange={handleChange}
               />
+              <label htmlFor="category">
+                Pick category of event:
+                <select
+                  name="category"
+                  id="category"
+                  className="event-form__field"
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="work" className="event-form__option">
+                    work
+                  </option>
+                  <option value="life" className="event-form__option">
+                    life
+                  </option>
+                  <option value="sport" className="event-form__option">
+                    sport
+                  </option>
+                </select>
+              </label>
             </div>
             <textarea
               value={description}

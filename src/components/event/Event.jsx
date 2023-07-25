@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import EventRemove from "../eventRemove/EventRemove";
 import "./event.scss";
 
-const Event = ({ height, top, title, time, id }) => {
+const Event = ({ height, top, title, time, id, category }) => {
   const [removeBtn, setRemoveBtn] = useState(false);
   const eventStyle = {
     height,
@@ -14,7 +14,7 @@ const Event = ({ height, top, title, time, id }) => {
   return (
     <div
       style={eventStyle}
-      className="event"
+      className={"event" + " " + category}
       onMouseEnter={() => {
         setRemoveBtn(true);
       }}

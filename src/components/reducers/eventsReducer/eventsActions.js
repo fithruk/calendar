@@ -25,7 +25,7 @@ const loadEvents = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       });
       if (data.events) {
-        dispatch(setError({}));
+        dispatch(setError({ msg: null }));
         dispatch(setLoadedEvents(data.events));
       } else {
         dispatch(setError(data));
@@ -38,7 +38,8 @@ const loadEvents = () => {
 
 const upLoadNewTask = async (newTask, token) => {
   try {
-    await addNewEvent(newTask, token);
+    const res = await addNewEvent(newTask, token);
+    console.log(res);
   } catch (error) {
     throw new Error(error);
   }

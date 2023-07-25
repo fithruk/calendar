@@ -19,9 +19,10 @@ const eventsReducer = (state = initialState, action) => {
       };
     }
     case "SET_MESSAGES": {
+      console.log(action.payload);
       return {
         ...state,
-        messages: (state.messages = action.payload),
+        messages: { ...state.messages, msg: action.payload.payload },
       };
     }
     default:
