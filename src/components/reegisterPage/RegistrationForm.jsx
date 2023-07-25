@@ -4,7 +4,6 @@ import { registration } from "../../gateway/apiEndpoints";
 import Spinner from "../spinner/Spinner";
 import { setMessages, setError } from "../reducers/eventsReducer/eventsActions";
 import { TextField, Box, Typography, Button, Alert } from "@mui/material";
-import { useNavigate } from "react-router";
 import { inputValidator } from "../../utils/formValidator";
 
 const RefistrationForm = () => {
@@ -16,9 +15,7 @@ const RefistrationForm = () => {
   });
   const { messages, error } = useSelector((state) => state.events);
   const { displaySpinner } = useSelector((state) => state.spinner);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const inputHandler = (e) => {
     if (error.msg) {
       dispatch(
@@ -49,10 +46,24 @@ const RefistrationForm = () => {
     toggleSpinner();
     try {
       const res = await registration(input);
-      if (res.msg) {
-        navigate("/");
-        dispatch(setMessages(res));
+      if (res.type === "error") {
+        dispatch(
+          setError({
+            type: "SET_ERRORS",
+            payload: res.msg,
+          })
+        );
         setInput({ name: "", email: "", password: "", confirm: "" });
+        toggleSpinner();
+      } else {
+        dispatch(
+          setMessages({
+            type: "SET_MESSAGES",
+            payload: res.msg,
+          })
+        );
+        setInput({ name: "", email: "", password: "", confirm: "" });
+        toggleSpinner();
       }
     } catch (error) {
       console.log(error);
@@ -64,9 +75,12 @@ const RefistrationForm = () => {
   };
 
   useEffect(() => {
-    const timeOut = setTimeout(() => {
-      dispatch({ type: "SET_MESSAGES", payload: {} });
-    }, 5000);
+    let timeOut;
+    if (messages.msg) {
+      timeOut = setTimeout(() => {
+        dispatch({ type: "SET_MESSAGES", payload: {} });
+      }, 5000);
+    }
 
     return () => {
       clearTimeout(timeOut);

@@ -56,7 +56,7 @@ const Hour = ({ dataDay, dataHour, hourEvents, month }) => {
       data-month={month}
       onClick={setDinamicEvent}
     >
-      {hourEvents.map(({ id, dateFrom, dateTo, title }) => {
+      {hourEvents.map(({ id, dateFrom, dateTo, title, category }) => {
         const eventStart = `${new Date(dateFrom).getHours()}:${formatMins(
           new Date(dateFrom).getMinutes()
         )}`;
@@ -75,6 +75,7 @@ const Hour = ({ dataDay, dataHour, hourEvents, month }) => {
             top={new Date(dateFrom).getMinutes()}
             time={`${eventStart} - ${eventEnd}`}
             title={title}
+            category={category}
           />
         );
       })}
