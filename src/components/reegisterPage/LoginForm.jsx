@@ -43,23 +43,33 @@ const LoginForm = () => {
       );
     }
     toggleSpinner();
-    const res = await login(input);
-    localStorage.setItem("token", res.candidate);
+    try {
+      const res = await login(input);
+      localStorage.setItem("token", res.candidate);
 
-    if (res.candidate) {
+      if (res.candidate) {
+        dispatch(
+          setError({
+            type: "SET_ERRORS",
+            payload: null,
+          })
+        );
+        toggleSpinner();
+        navigate(`/calendar`);
+      } else {
+        dispatch(
+          setError({
+            type: "SET_ERRORS",
+            payload: res.msg,
+          })
+        );
+        toggleSpinner();
+      }
+    } catch (error) {
       dispatch(
         setError({
           type: "SET_ERRORS",
-          payload: null,
-        })
-      );
-      toggleSpinner();
-      navigate(`/calendar`);
-    } else {
-      dispatch(
-        setError({
-          type: "SET_ERRORS",
-          payload: res.msg,
+          payload: "Unexpected error",
         })
       );
       toggleSpinner();

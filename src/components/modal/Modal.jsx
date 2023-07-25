@@ -17,6 +17,8 @@ const Modal = () => {
   const { eventsArr } = useSelector((state) => state.events);
   const dispatch = useDispatch();
 
+  const options = ["work", "life", "sport"];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -149,15 +151,11 @@ const Modal = () => {
                   onChange={handleChange}
                   required
                 >
-                  <option value="work" className="event-form__option">
-                    work
-                  </option>
-                  <option value="life" className="event-form__option">
-                    life
-                  </option>
-                  <option value="sport" className="event-form__option">
-                    sport
-                  </option>
+                  {options.map((option) => (
+                    <option value={option} className="event-form__option">
+                      {option}
+                    </option>
+                  ))}
                 </select>
               </label>
             </div>
